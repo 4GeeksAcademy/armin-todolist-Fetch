@@ -30,14 +30,19 @@ const Home = () => {
 		<div className="text-center">
 			<div className='overflow-hidden p-5'>
 				<div className='d-flex flex-row justify-content-start flew-now-wrap align-items-stretch gap-3 overflow-scroll'>
-					<Card title="Saludos" cta="continuar" description="Hola Bienvenidos" />
-					<Card title="Saludos" cta="continuar" description="Hola Bienvenidos" />
-					<Card title="Saludos" cta="continuar" description="Hola Bienvenidos" />
-					<Card title="Saludos" cta="continuar" description="Hola Bienvenidos" />
-					<Card title="Saludos" cta="continuar" description="Hola Bienvenidos" />
-					<Card title="Saludos" cta="continuar" description="Hola Bienvenidos" />
-					<Card title="Saludos" cta="continuar" description="Hola Bienvenidos" />
+					{
+						products.map((product) => {
+							return (
+								<Card
+									title={product.title}
+									cta={product.availabilityStatus}
+									description={product.description}
+									imgSource={product.thumbnail}
+								/>
+							)
 
+						})
+					}
 				</div>
 
 			</div>
@@ -47,12 +52,7 @@ const Home = () => {
 
 export default Home
 
-
-
-
-
-
-
+//TodoList
 // const Home = () => {
 // 	// Estado para el texto que se escribe en el input
 // 	const [taskInput, setTaskInput] = useState("");
