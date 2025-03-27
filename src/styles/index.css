@@ -1,11 +1,51 @@
-/* 
+body {
+    background: black;
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+.container-card{
+  margin: 30px 50px 0px 50px;
+}
 
-*/
+.card-form{
+  margin-top: 20px;
+}
+
+.title-container{
+  font-weight: 100;
+  font-size: 100px;
+}
+
+
+.task-item {
+    position: relative;
+  }
+  
+  .delete-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    display: none;
+  }
+  
+  .task-item:hover .delete-icon {
+    display: inline;
+    color: red;
+
+  }
+  .form-control {
+    width: 80%;           /* Ocupa el 80% del ancho del contenedor */
+    max-width: 700px;     /* No excede los 600px */
+    padding: 20px;        /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde ligero */
+    border-radius: 5px;   /* Bordes redondeados */
+    background-color: #f9f9f9; /* Color de fondo suave */
+  }
+
+  input[type="text"] {
+    width: 100%;          /* Ocupa todo el ancho del formulario */
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
