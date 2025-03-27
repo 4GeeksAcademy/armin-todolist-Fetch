@@ -12,7 +12,7 @@ const Home = () => {
 	async function getAllCharecters() {
 
 		try {
-			const response = await fetch(base_url + '/character', {
+			const response = await fetch(base_url + '/users', {
 				method: 'GET',
 				headers: {
 					'Content-type': 'application/json'
