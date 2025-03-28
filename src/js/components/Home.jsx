@@ -2,7 +2,6 @@
 // import { Card } from "./Card";
 
 
-import React, { useState, useEffect } from "react";
 //Card
 // const Home = () => {
 // 	const [products, setProducts] = useState([])
@@ -52,7 +51,7 @@ import React, { useState, useEffect } from "react";
 // }
 
 // export default Home
-
+import React, { useState, useEffect } from "react";
 // TodoList
 const API_URL = 'https://playground.4geeks.com/todo/todos/alesanchezr';  // url base de la api
 const USER_URL = 'https://playground.4geeks.com'
@@ -82,7 +81,7 @@ const Home = () => {
 			console.error("Error en createUser:", error);
 		}
 	}
-
+	// Función para obtener (GET) la lista de tareas del servidor
 	async function getUsers() {
 
 		try {
@@ -97,7 +96,8 @@ const Home = () => {
 			console.error('Error en fetchTask')
 		}
 	}
-	async function updateUser(newTask) {
+	// Función para actualizar (PUT) la lista de tareas en el servidor
+	async function updateUser(newTasks) {
 
 		try {
 			const response = await fetch(API_URL, {
@@ -105,7 +105,7 @@ const Home = () => {
 				headers: {
 					'Content-type': 'application/json'
 				},
-				body: JSON.stringify({ todos: newTask })
+				body: JSON.stringify({ todos: newTasks })
 			});
 			if (response.status !== 200) {
 				console.log('Error al actualizar las tareas', response.status)
@@ -116,29 +116,35 @@ const Home = () => {
 	}
 
 	useEffect(() => {
-		getUsers()
-	}, [])
+		async function initialize() {
+			await createUser();
+			await getUsers();
+		}
+		initialize();
+	}, []);
 
 	// Función para detectar la tecla Enter y agregar la tarea
 	const handleKeyDown = (event) => {
 		if (event.key === "Enter" && taskInput !== "") {
 			// Se agrega la tarea a la lista y se limpia el input
-			setTasks([...tasks, taskInput]);
+			const newTasks = [...tasks, taskInput];
+			setTasks(newTasks);
 			setTaskInput("");
-			updateUser(newTask)
+			updateUser(newTasks)
 		}
 	};
 
 	// Función para eliminar una tarea de la lista
 	const handleDelete = (index) => {
 		// Filtramos la tarea en el índice que se quiere eliminar
-		setTasks(tasks.filter((_, i) => i !== index));
-		updateUser(newTask)
+		const newTasks = tasks.filter((_, i) => i !== index);
+		setTasks(newTasks);
+		updateUser(newTasks)
 	};
 	// Función para limpiar todas las tareas
 	const clearAll = () => {
 		setTasks([]);
-		updateUser(newTask)
+		updateUser([])
 	}
 
 	return (
