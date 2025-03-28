@@ -55,11 +55,33 @@ import React, { useState, useEffect } from "react";
 
 // TodoList
 const API_URL = 'https://playground.4geeks.com/todo/todos/alesanchezr';  // url base de la api
+const USER_URL = 'https://playground.4geeks.com'
 const Home = () => {
 	// Estado para el texto que se escribe en el input
 	const [taskInput, setTaskInput] = useState("");
 	// Estado para la lista de tareas
 	const [tasks, setTasks] = useState([]);
+
+	// Función para crear el usuario
+	const createUser = async () => {
+		try {
+			const response = await fetch(USER_URL + '/todo/users', {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({})
+			});
+			if (response.status !== 200) {
+				console.error("Error creando usuario:", response.status);
+			} else {
+				const data = await response.json();
+				console.log("Usuario creado:", data);
+			}
+		} catch (error) {
+			console.error("Error en createUser:", error);
+		}
+	}
 
 	async function getUsers() {
 
@@ -79,11 +101,11 @@ const Home = () => {
 
 		try {
 			const response = await fetch(API_URL, {
-				method: 'GET',
+				method: 'PUT',
 				headers: {
 					'Content-type': 'application/json'
 				},
-				body: JSON.stringify(newTask)
+				body: JSON.stringify({ todos: newTask })
 			});
 			if (response.status !== 200) {
 				console.log('Error al actualizar las tareas', response.status)
@@ -103,6 +125,7 @@ const Home = () => {
 			// Se agrega la tarea a la lista y se limpia el input
 			setTasks([...tasks, taskInput]);
 			setTaskInput("");
+			updateUser(newTask)
 		}
 	};
 
@@ -110,7 +133,13 @@ const Home = () => {
 	const handleDelete = (index) => {
 		// Filtramos la tarea en el índice que se quiere eliminar
 		setTasks(tasks.filter((_, i) => i !== index));
+		updateUser(newTask)
 	};
+	// Función para limpiar todas las tareas
+	const clearAll = () => {
+		setTasks([]);
+		updateUser(newTask)
+	}
 
 	return (
 		<div className="card d-flex bg-secondary-subtle container-fluid" style={{ height: "700px", margin: "30px auto 0", width: "80%", maxWidth: "600px" }}>
@@ -147,6 +176,9 @@ const Home = () => {
 							))
 						)}
 					</ul>
+					<button className="btn btn-danger mt-2" onClick={clearAll}>
+						Clear All
+					</button>
 					<div className="card-footer bg-danger-subtle text-secondary justify-content-start d-flex" >
 						{tasks.length} {tasks.length === 1 ? "item left" : "items left"}
 					</div>
