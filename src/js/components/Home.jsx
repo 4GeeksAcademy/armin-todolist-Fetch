@@ -53,8 +53,7 @@
 // export default Home
 import React, { useState, useEffect } from "react";
 // TodoList
-const API_URL = 'https://playground.4geeks.com/todo/todos/alesanchezr';  // url base de la api
-const USER_URL = 'https://playground.4geeks.com'
+const API_URL = 'https://playground.4geeks.com/todo';  // url base de la api
 const Home = () => {
 	// Estado para el texto que se escribe en el input
 	const [taskInput, setTaskInput] = useState("");
@@ -64,7 +63,7 @@ const Home = () => {
 	// Función para crear el usuario
 	const createUser = async () => {
 		try {
-			const response = await fetch(USER_URL + '/todo/users', {
+			const response = await fetch(API_URL + '/users/armin', {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -85,7 +84,7 @@ const Home = () => {
 	async function getUsers() {
 
 		try {
-			const response = await fetch(API_URL);
+			const response = await fetch(API_URL + '/users/armin');
 			if (response.status !== 200) {
 				console.log('Error en obtener las tareas', response.status)
 				return null
@@ -100,16 +99,8 @@ const Home = () => {
 	async function updateUser(newTasks) {
 
 		try {
-			const response = await fetch(API_URL, {
-				method: 'PUT',
-				headers: {
-					'Content-type': 'application/json'
-				},
-				body: JSON.stringify({ todos: newTasks })
-			});
-			if (response.status !== 200) {
-				console.log('Error al actualizar las tareas', response.status)
-			}
+
+
 		} catch (error) {
 			console.error('Error en updateUser:', error)
 		}
@@ -117,7 +108,7 @@ const Home = () => {
 
 	useEffect(() => {
 		async function initialize() {
-			await createUser();
+			// await createUser();
 			await getUsers();
 		}
 		initialize();
@@ -127,10 +118,10 @@ const Home = () => {
 	const handleKeyDown = (event) => {
 		if (event.key === "Enter" && taskInput !== "") {
 			// Se agrega la tarea a la lista y se limpia el input
-			const newTasks = [...tasks, taskInput];
-			setTasks(newTasks);
+			// const newTasks = [...tasks, taskInput];
+			// setTasks(newTasks);
 			setTaskInput("");
-			updateUser(newTasks)
+			// updateUser(newTasks)
 		}
 	};
 
@@ -171,7 +162,7 @@ const Home = () => {
 						) : (
 							tasks.map((task, index) => (
 								<li key={index} className="list-group-item task-item  d-flex">
-									{task}
+									{task.label}
 									<span
 										className="delete-icon fs-4 "
 										onClick={() => handleDelete(index)}
