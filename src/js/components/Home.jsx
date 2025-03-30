@@ -122,7 +122,7 @@ const Home = () => {
 		}
 	}
 
-	// Función para eliminar una tarea
+	// Función para eliminar una tarea de la lista
 	async function deleteTask() {
 
 		try {
@@ -205,7 +205,7 @@ const Home = () => {
 									{task.label}
 									<span
 										className="delete-icon fs-4 "
-										onClick={() => handleDelete(index)}
+										onClick={() => deleteTask(task.id)}
 									>
 										x
 									</span>
