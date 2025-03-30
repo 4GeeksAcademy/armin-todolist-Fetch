@@ -96,13 +96,53 @@ const Home = () => {
 		}
 	}
 	// Función para actualizar (PUT) la lista de tareas en el servidor
-	async function updateUser(newTasks) {
+	async function updateTask() {
 
 		try {
+			const response = await fetch(API_URL + '/todos/1', {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					label: "Tarea actualizada",
+					is_done: true
+				})
+			});
+			if (response.status !== 200) {
+				console.error("Error creando lista de tareas:", response.status);
+			} else {
+				const data = await response.json();
+				console.log("lista creada:", data);
 
+			}
 
 		} catch (error) {
 			console.error('Error en updateUser:', error)
+		}
+	}
+
+	// Función para eliminar una tarea
+	async function deleteTask() {
+
+		try {
+			const response = await fetch(API_URL + '/todos/1', {
+				method: "DELETE",
+				headers: {
+					"accept": "application/json"
+				},
+				body: JSON.stringify({})
+			});
+			if (response.status !== 200) {
+				console.error("Error eliminando la lista:", response.status);
+			} else {
+				const data = await response.json();
+				console.log("lista eliminada:", data);
+
+			}
+
+		} catch (error) {
+			console.error('Error en deleteTask:', error)
 		}
 	}
 
@@ -135,7 +175,7 @@ const Home = () => {
 	// Función para limpiar todas las tareas
 	const clearAll = () => {
 		setTasks([]);
-		updateUser([])
+		updateTask([])
 	}
 
 	return (
