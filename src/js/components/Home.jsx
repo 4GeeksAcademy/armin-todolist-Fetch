@@ -96,7 +96,7 @@ const Home = () => {
 		}
 	}
 	// Función para actualizar (PUT) la lista de tareas en el servidor
-	async function updateTask() {
+	async function updateUser(newTasks) {
 
 		try {
 			const response = await fetch(API_URL + '/todos/1', {
@@ -123,28 +123,28 @@ const Home = () => {
 	}
 
 	// Función para eliminar una tarea de la lista
-	async function deleteTask() {
+	// async function deleteTask() {
 
-		try {
-			const response = await fetch(API_URL + '/todos/1', {
-				method: "DELETE",
-				headers: {
-					"accept": "application/json"
-				},
-				body: JSON.stringify({})
-			});
-			if (response.status !== 200) {
-				console.error("Error eliminando la lista:", response.status);
-			} else {
-				const data = await response.json();
-				console.log("lista eliminada:", data);
+	// 	try {
+	// 		const response = await fetch(API_URL + '/todos/1', {
+	// 			method: "DELETE",
+	// 			headers: {
+	// 				"accept": "application/json"
+	// 			},
+	// 			body: JSON.stringify({})
+	// 		});
+	// 		if (response.status !== 200) {
+	// 			console.error("Error eliminando la lista:", response.status);
+	// 		} else {
+	// 			const data = await response.json();
+	// 			console.log("lista eliminada:", data);
 
-			}
+	// 		}
 
-		} catch (error) {
-			console.error('Error en deleteTask:', error)
-		}
-	}
+	// 	} catch (error) {
+	// 		console.error('Error en deleteTask:', error)
+	// 	}
+	// }
 
 	useEffect(() => {
 		async function initialize() {
@@ -158,14 +158,16 @@ const Home = () => {
 	const handleKeyDown = (event) => {
 		if (event.key === "Enter" && taskInput !== "") {
 			// Se agrega la tarea a la lista y se limpia el input
+			const newTask = { id: Date.now(), label: taskInput, is_done: false };
+			const newTasks = tasks.concat(newTask)
 			// const newTasks = [...tasks, taskInput];
-			// setTasks(newTasks);
+			setTasks(newTasks);
 			setTaskInput("");
-			// updateUser(newTasks)
+			updateUser(newTasks)
 		}
 	};
 
-	// Función para eliminar una tarea de la lista
+	// Función para eliminar una tarea de la lista y sincronizar con la api
 	const handleDelete = (index) => {
 		// Filtramos la tarea en el índice que se quiere eliminar
 		const newTasks = tasks.filter((_, i) => i !== index);
@@ -205,7 +207,7 @@ const Home = () => {
 									{task.label}
 									<span
 										className="delete-icon fs-4 "
-										onClick={() => deleteTask(task.id)}
+										onClick={() => handleDelete(index)}
 									>
 										x
 									</span>
